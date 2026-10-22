@@ -1,0 +1,193 @@
+/* bf-kit.css — the base-shelf look for brain-apps. Kit version 0.1.0, created 2026-10-22.
+   Vendored into each app as kit/bf-kit.css; edit here (brain-app-kit), then copy.
+   Every colour and face comes from the console's skin: bf-kit.js asks the host (meta.theme) and
+   sets the same custom properties the console uses on :root. The values below are the console's
+   default skin (gold), used only until the host answers, or when the app is opened standalone. */
+
+:root {
+  --bg: #0e0c0b;
+  --surface: #161310;
+  --surface2: #1c1814;
+  --text: #e8e0d5;
+  --text-dim: #8b7d6e;
+  --muted: #6b5f52;
+  --accent: #c9a96e;
+  --border: #2a2420;
+  --code-bg: #0e0c0b;
+  --code-fg: #c4b8a8;
+  --font-body: system-ui, -apple-system, sans-serif;
+  --font-display: Lora, Georgia, serif;
+  --font-mono: "DM Mono", ui-monospace, monospace;
+
+  /* kit-only measures */
+  --r: 10px;
+  --r-sm: 7px;
+  --gap: 16px;
+  --measure: 720px;
+  --ease: cubic-bezier(.2, .7, .2, 1);
+  --accent-soft: color-mix(in srgb, var(--accent) 14%, transparent);
+  --accent-line: color-mix(in srgb, var(--accent) 45%, var(--border));
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+::selection { background: var(--accent-soft); }
+
+/* ---- page frame ---- */
+.bf-page { max-width: var(--measure); margin: 0 auto; padding: 36px 22px 80px; }
+.bf-page.wide { max-width: 1040px; }
+.bf-head { margin-bottom: 28px; }
+.bf-title { font-family: var(--font-display); font-weight: 400; font-size: 28px; letter-spacing: .01em; margin: 0 0 6px; }
+.bf-sub { color: var(--text-dim); margin: 0; }
+.bf-sub p, .bf-prose p { margin: 0 0 .35em; }
+.bf-label {
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--muted); margin: 0 0 10px;
+}
+.bf-section { margin-top: 32px; }
+.bf-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.bf-row.between { justify-content: space-between; }
+.bf-stack > * + * { margin-top: 12px; }
+.bf-dim { color: var(--text-dim); }
+.bf-muted { color: var(--muted); }
+.bf-mono { font-family: var(--font-mono); font-size: 12.5px; }
+.bf-hidden { display: none !important; }
+
+/* ---- cards and lists ---- */
+.bf-card {
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--r);
+  padding: 18px 20px;
+}
+.bf-card + .bf-card { margin-top: 12px; }
+.bf-list { list-style: none; margin: 0; padding: 0; border: 1px solid var(--border); border-radius: var(--r); overflow: hidden; }
+.bf-item {
+  display: flex; gap: 14px; align-items: flex-start; padding: 14px 18px;
+  background: var(--surface); border-top: 1px solid var(--border);
+}
+.bf-item:first-child { border-top: 0; }
+.bf-item.clickable { cursor: pointer; transition: background .15s var(--ease); }
+.bf-item.clickable:hover { background: var(--surface2); }
+.bf-item-main { flex: 1; min-width: 0; }
+.bf-item-title { margin: 0; overflow-wrap: anywhere; }
+.bf-item-meta { margin: 2px 0 0; color: var(--muted); font-size: 13px; }
+.bf-item-side { color: var(--muted); font-size: 12.5px; font-family: var(--font-mono); white-space: nowrap; }
+
+/* ---- controls (all custom; never the browser's own select) ---- */
+.bf-btn {
+  appearance: none; font: inherit; font-size: 14px; line-height: 1;
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 10px 16px; border-radius: var(--r-sm);
+  border: 1px solid var(--border); background: var(--surface2); color: var(--text);
+  cursor: pointer; transition: border-color .15s var(--ease), background .15s var(--ease), opacity .15s;
+}
+.bf-btn:hover { border-color: var(--accent-line); }
+.bf-btn:focus-visible, .bf-input:focus-visible, .bf-chip:focus-visible, .bf-select-btn:focus-visible { outline: 2px solid var(--accent-line); outline-offset: 2px; }
+.bf-btn.primary { background: var(--accent); border-color: var(--accent); color: var(--bg); }
+.bf-btn.primary:hover { filter: brightness(1.06); }
+.bf-btn.ghost { background: transparent; }
+.bf-btn.small { padding: 7px 11px; font-size: 13px; }
+.bf-btn[disabled], .bf-btn.busy { opacity: .55; cursor: default; pointer-events: none; }
+.bf-btn.busy::before {
+  content: ""; width: 12px; height: 12px; border-radius: 50%;
+  border: 1.5px solid currentColor; border-right-color: transparent; animation: bf-spin .8s linear infinite;
+}
+@keyframes bf-spin { to { transform: rotate(360deg); } }
+
+.bf-input, .bf-textarea {
+  appearance: none; width: 100%; font: inherit; color: var(--text);
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-sm);
+  padding: 11px 13px; transition: border-color .15s var(--ease);
+}
+.bf-input::placeholder, .bf-textarea::placeholder { color: var(--muted); }
+.bf-input:hover, .bf-textarea:hover { border-color: var(--accent-line); }
+.bf-textarea { min-height: 110px; resize: vertical; line-height: 1.5; }
+
+.bf-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.bf-chip {
+  appearance: none; font: inherit; font-size: 13.5px; line-height: 1;
+  padding: 9px 13px; border-radius: 999px; cursor: pointer;
+  border: 1px solid var(--border); background: transparent; color: var(--text-dim);
+  transition: all .15s var(--ease);
+}
+.bf-chip:hover { color: var(--text); border-color: var(--accent-line); }
+.bf-chip[aria-pressed="true"] { color: var(--text); background: var(--accent-soft); border-color: var(--accent-line); }
+.bf-chip[disabled] { opacity: .4; cursor: default; }
+
+.bf-select { position: relative; display: inline-block; min-width: 160px; }
+.bf-select-btn {
+  appearance: none; font: inherit; font-size: 14px; width: 100%; text-align: left;
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  padding: 10px 13px; border-radius: var(--r-sm); cursor: pointer;
+  border: 1px solid var(--border); background: var(--surface); color: var(--text);
+}
+.bf-select-btn:hover { border-color: var(--accent-line); }
+.bf-select-btn::after { content: ""; width: 7px; height: 7px; border-right: 1.5px solid var(--muted); border-bottom: 1.5px solid var(--muted); transform: rotate(45deg) translateY(-2px); }
+.bf-select-menu {
+  position: absolute; z-index: 20; left: 0; right: 0; top: calc(100% + 6px);
+  background: var(--surface2); border: 1px solid var(--border); border-radius: var(--r-sm);
+  padding: 5px; box-shadow: 0 12px 32px rgba(0, 0, 0, .35); max-height: 280px; overflow: auto;
+}
+.bf-select-opt { padding: 9px 11px; border-radius: 5px; cursor: pointer; color: var(--text-dim); font-size: 14px; }
+.bf-select-opt:hover, .bf-select-opt.active { background: var(--accent-soft); color: var(--text); }
+.bf-select-opt[aria-selected="true"] { color: var(--accent); }
+
+/* ---- drop zone ---- */
+.bf-drop {
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;
+  min-height: 150px; padding: 26px; text-align: center; cursor: pointer;
+  border: 1.5px dashed var(--border); border-radius: var(--r); background: var(--surface);
+  color: var(--text-dim); transition: border-color .15s var(--ease), background .15s var(--ease);
+}
+.bf-drop:hover, .bf-drop.over { border-color: var(--accent-line); background: var(--surface2); }
+.bf-drop strong { color: var(--text); font-weight: 500; }
+.bf-drop input { display: none; }
+
+/* ---- states ---- */
+.bf-empty { padding: 34px 20px; text-align: center; color: var(--text-dim); border: 1px dashed var(--border); border-radius: var(--r); }
+.bf-empty p { margin: 0 0 .3em; }
+.bf-note { padding: 12px 15px; border-radius: var(--r-sm); background: var(--surface); border-left: 2px solid var(--accent-line); color: var(--text-dim); font-size: 14px; }
+.bf-note p { margin: 0 0 .25em; }
+.bf-note.warn { border-left-color: #b4654a; }
+.bf-skeleton { height: 14px; border-radius: 4px; background: linear-gradient(90deg, var(--surface) 0%, var(--surface2) 50%, var(--surface) 100%); background-size: 200% 100%; animation: bf-shimmer 1.4s infinite; }
+.bf-skeleton + .bf-skeleton { margin-top: 10px; }
+@keyframes bf-shimmer { to { background-position: -200% 0; } }
+
+.bf-prose { line-height: 1.65; }
+.bf-prose p { margin: 0 0 .5em; }
+.bf-prose h3 { font-family: var(--font-display); font-weight: 400; font-size: 18px; margin: 1.2em 0 .5em; }
+.bf-prose ul { margin: 0 0 .8em; padding-left: 1.2em; }
+.bf-prose li { margin: 0 0 .3em; }
+.bf-prose code, .bf-code { font-family: var(--font-mono); font-size: .88em; background: var(--code-bg); color: var(--code-fg); padding: 1px 5px; border-radius: 4px; }
+.bf-prose a, a.bf-link { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--accent-line); }
+
+.bf-tag { display: inline-block; font-family: var(--font-mono); font-size: 11px; letter-spacing: .06em; padding: 3px 8px; border-radius: 999px; border: 1px solid var(--border); color: var(--muted); }
+.bf-tag.accent { color: var(--accent); border-color: var(--accent-line); }
+
+.bf-toast {
+  position: fixed; left: 50%; bottom: 26px; transform: translate(-50%, 12px); opacity: 0;
+  background: var(--surface2); border: 1px solid var(--border); border-radius: 999px;
+  padding: 10px 18px; font-size: 14px; color: var(--text); z-index: 50;
+  transition: opacity .2s var(--ease), transform .2s var(--ease); pointer-events: none; max-width: 90vw;
+}
+.bf-toast.show { opacity: 1; transform: translate(-50%, 0); pointer-events: auto; }
+.bf-toast.warn { border-color: #b4654a; }
+
+.bf-standalone { padding: 10px 14px; margin-bottom: 20px; border-radius: var(--r-sm); border: 1px solid var(--border); color: var(--text-dim); font-size: 13.5px; }
+
+.bf-fade { animation: bf-fade .25s var(--ease); }
+@keyframes bf-fade { from { opacity: 0; transform: translateY(4px); } }
+
+@media (max-width: 560px) {
+  .bf-page { padding: 24px 16px 64px; }
+  .bf-title { font-size: 24px; }
+  .bf-item { padding: 12px 14px; }
+}
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }

@@ -1,0 +1,42 @@
+# Toolbox: brain-app manifest
+#
+# Drop a file, pick an action, the result lands in Files. PDF to text or Word, split and merge,
+# image compress, audio transcribe, summarize and translate. The file work runs in api.py, which is
+# pure computation (no memory, no keys, no network); the model work goes through the bridge.
+#
+# Created: 2026-10-22
+
+dialect: brain-app/v1
+id: toolbox
+name: Toolbox
+version: 0.1.0
+description: Drop a file and pick an action. PDF to text or Word, split or merge PDFs, compress images, transcribe audio, summarize or translate. Results land in Files.
+license: AGPL-3.0
+
+author:
+  name: hbar
+  url: https://hbar.systems
+  contact: hello@hbar.systems
+
+repo: https://github.com/hbar-systems/brain-app-toolbox
+
+tab:
+  label: Toolbox
+  route: /toolbox
+  order: 40
+
+entries:
+  ui_bundle: ./
+  api: ./api.py
+
+permissions:
+  - files.write
+  - llm.invoke
+  - audio.transcribe
+
+requires_layers:
+  - layer: semantic
+    mode: read
+
+engines:
+  brainfoundry-nous: ">=0.13.0"

@@ -1,0 +1,19 @@
+/* Toolbox: created 2026-10-22. Kit tokens only. */
+.tb-side { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+.tb-opts { margin-top: 18px; }
+.tb-field { margin-top: 16px; }
+.tb-field .bf-label { margin-bottom: 8px; }
+.tb-hint { margin: 8px 0 0; font-size: 13px; }
+.tb-gap { margin-top: 12px; }
+.tb-run { margin-top: 22px; }
+.tb-statuswrap { margin-top: 22px; }
+.tb-status { margin: 0 0 10px; }
+.tb-pre {
+  margin: 14px 0 0; padding: 12px 14px; max-height: 260px; overflow: auto;
+  background: var(--code-bg); color: var(--code-fg); border: 1px solid var(--border); border-radius: var(--r-sm);
+  font-family: var(--font-mono); font-size: 12.5px; line-height: 1.55; white-space: pre-wrap; overflow-wrap: anywhere;
+}
+@media (max-width: 520px) {
+  .bf-item { flex-wrap: wrap; }
+  .tb-side { width: 100%; justify-content: flex-start; }
+}
